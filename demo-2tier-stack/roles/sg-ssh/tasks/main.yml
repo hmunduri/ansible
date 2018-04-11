@@ -1,0 +1,15 @@
+---  
+- name: Create SSH security group
+  ec2_group:
+    name: "{{ env }}-sg-ssh"
+    region: "{{ region }}"
+    description: allow ssh access
+    vpc_id: "{{ vpc_id }}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{control_ip}}"
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0

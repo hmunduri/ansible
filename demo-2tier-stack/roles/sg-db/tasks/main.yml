@@ -1,0 +1,19 @@
+---  
+- name: Create Db security group
+  ec2_group:
+    name: "{{ env }}-sg-Db-internal"
+    region: "{{ region }}"
+    description: Db access from internal network only
+    vpc_id: "{{ vpc_id }}"
+    rules:
+      - proto: all
+        cidr_ip: "{{ web_cidr1}}"
+      - proto: all
+        cidr_ip: "{{ web_cidr2}}"
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ control_ip}}"
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0

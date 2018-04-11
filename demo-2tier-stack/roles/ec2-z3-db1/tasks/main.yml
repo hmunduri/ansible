@@ -1,0 +1,30 @@
+---
+- name: Create the zone 3 Db1 server instances
+  ec2:
+    image: "{{ server.ec2_image }}"
+    region: "{{ region }}"
+    instance_type: "{{ server.instance_type }}"
+    #assign_public_ip: True
+    key_name: "{{key_name}}"
+    group: ["{{ env}}-sg-Db-internal", "{{ env}}-vpc-ssh"]
+    instance_tags: { Name: "{{ env }}-zone3-Db1", type: Dbserver, Stack: Ansible_Test, Owner: devops, tier: Db, App: mongodb01, env: "{{ env }}", az: 3 }
+    exact_count: "{{ server.zone_1_count }}"
+    count_tag: { type: Dbserver, env: "{{ env }}", az: 03 }
+    vpc_subnet_id: "{{ db_subnet1}}"
+    zone: "{{ zone_3 }}"
+    wait: yes
+  register: ec2c
+  #tags: ec2
+
+- name: Add Appserver instances to host group
+    local_action: add_host hostname={{ item.private_ip }} groupname=db1
+    with_items: ec2c.instances
+
+- name: wait for the instance to start
+    local_action: wait_for state=started host={{ item.private_ip }} port=22 search_regex=OpenSSH
+    with_items: ec2c.instances
+    ignore_errors: yes
+    
+#  - name: Giving another 65 secs to give stack to come up clean running status
+#    wait_for: port=22 delay=65
+#   ignore_errors: yes

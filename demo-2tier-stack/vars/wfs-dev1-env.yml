@@ -1,0 +1,56 @@
+---
+# KeyPair to be Used 
+key_name: kp-aborugadda-devops-ansiblecm-t
+
+# Enviroments 
+env: dev
+
+# Region and AZ to be used 
+region: us-east-1
+
+# VPC to be Used
+vpc_id: vpc-77013212
+
+# AZ to be used for Web
+zone_1: us-east-1e
+zone_2: us-east-1b
+
+# Subnets Public  
+web_subnet1: subnet-902dfaad
+web_subnet2: subnet-a2df4e89
+
+# AZ to be used for Db
+zone_3: us-east-1d
+zone_4: us-east-1c
+
+# Private Subnets  
+db_subnet1: subnet-267a157f
+db_subnet2: subnet-f1f1ba86 
+
+# Security Group to be Used
+webs_sg2:
+webs_sg2:
+
+# Ports to be Open from Web to Db
+web_cidr1: 10.172.0.0/24
+web_cidr2: 10.172.3.0/24
+
+# Server 
+server:
+  instance_type: t2.micro
+  ec2_image: ami-60b6c60a
+  zone_1_count: 1
+  zone_2_count: 1
+  zone_3_count: 1
+  zone_4_count: 1
+  
+db:
+  instance_type: db.t2.micro
+  size: 5
+  name: devops-test-db
+  user: ansibledb
+  password: P@ssw0rd!
+
+# To SSH Servers from the Network 
+#control_ip: 216.26.91.4/32
+control_ip: 0.0.0.0/0

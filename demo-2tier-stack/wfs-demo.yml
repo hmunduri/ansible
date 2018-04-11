@@ -1,0 +1,22 @@
+---
+#ansible-playbook -i hosts wfs-demo.yml --private-key=~/kp-aborugadda-devops-ansiblecm-t.pem
+- name: Create WFS AWS infrastructure with two EC2 Web Servers and two EC2 Db Servers on different AZ.
+  hosts: localhost
+  connection: local
+
+  vars_files:
+    - vars/wfs-dev1-env.yml
+
+  roles:
+    - role: sg-web
+    - role: sg-db
+    - role: sg-ssh
+    - role: ec2-z1-web1
+    - role: ec2-z2-web2
+    - role: ec2-z3-db1
+    - role: ec2-z4-db2
+    - role: elb
+
+###############################
+###############################
+
